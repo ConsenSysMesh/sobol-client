@@ -1,0 +1,10 @@
+{
+  "name": "sobol-client",
+  "version": "0.0.1",
+  "description": "Provides a JavaScript client to Sobol's API.",
+  "main": "src/client.js",
+  "repository": "git@github.com:vleipnik-consensys/sobol-client.git",
+  "author": "TMNT",
+  "license": "MIT",
+  "private": true
+}
