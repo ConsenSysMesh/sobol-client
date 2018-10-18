@@ -2,22 +2,23 @@
   "name": "tmnt-client",
   "version": "0.0.1",
   "description": "Provides a JavaScript client to TMNT's API.",
-  "main": "src/client.js",
-  "repository": "git@github.com:vleipnik-consensys/tmnt-client.git",
+  "main": "dist/node/client.js",
+  "repository": "git@github.com:ProjectPeter/tmnt-client.git",
   "author": "TMNT",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "start-node": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec babel-node tests/node.js",
     "start-browser": "cross-env NODE_ENV=development webpack-dev-server --progress --open --mode development --config webpack.config.js",
-    "build-node": "",
-    "build-browser": ""
+    "build": "npm run build-browser && npm run build-node",
+    "build-node": "cross-env NODE_ENV=production npx babel src --out-dir dist/node/ --inline-source-maps",
+    "build-browser": "cross-env NODE_ENV=production webpack -p --progress --mode production --config webpack.config.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "jsonwebtoken": "^8.3.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
@@ -36,9 +37,16 @@
     "clean-webpack-plugin": "^0.1.19",
     "cross-env": "^5.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.1.2",
     "nodemon": "^1.18.4",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && git add dist"
+    }
   }
 }
