@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+
+<h1>Welcome to the <%= htmlWebpackPlugin.options.title %></h1>
+
+</body>
+
+<script>
+
+  var rsa = {
+    private: '',
+    kid: '',
+  };
+
+  var jwt = '';
+
+  TmntApi.connect({
+    key: rsa,
+    protocol: 'http',
+    host: 'localhost',
+  })
+    .then((client) => {
+      console.log(client.getSession());
+      client.Users.find()
+        .then(users => console.log(users.data));
+    });
+
+</script>
+
+</html>
