@@ -17,6 +17,10 @@ Auth = /*#__PURE__*/function () {
       }
 
       return this._authenticateRsa();
+    } }, { key: "_decodeKey", value: function _decodeKey(
+
+    key) {
+      return Buffer.from(key, 'base64').toString('ascii');
     } }, { key: "_authenticateRsa", value: function _authenticateRsa()
 
     {var _this = this;
@@ -28,12 +32,12 @@ Auth = /*#__PURE__*/function () {
       });
     } }, { key: "_signRsa", value: function _signRsa(
 
-    message, privateKey) {
+    message, privateKey) {var _this2 = this;
       return new Promise(function (resolve) {
         var signer = (0, _crypto.createSign)('RSA-SHA256');
         signer.update(message);
         signer.end();
-        var signature = signer.sign(privateKey, 'base64');
+        var signature = signer.sign(_this2._decodeKey(privateKey), 'base64');
         resolve(signature);
       });
     } }, { key: "_getJwt", value: function _getJwt(
@@ -51,9 +55,9 @@ Auth = /*#__PURE__*/function () {
       then(function (response) {return response.data;});
     } }, { key: "_verifyJwt", value: function _verifyJwt(
 
-    encodedJwt) {var _this2 = this;
+    encodedJwt) {var _this3 = this;
       return new Promise(function (resolve, reject) {
-        _this2._request.get('/login/jwt-public-key').
+        _this3._request.get('/login/jwt-public-key').
         then(function (response) {
           var privateKey = response.data.keys[0].key;
 

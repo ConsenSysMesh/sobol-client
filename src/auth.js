@@ -19,6 +19,10 @@ class Auth {
     return this._authenticateRsa();
   }
 
+  _decodeKey(key) {
+    return Buffer.from(key, 'base64').toString('ascii');
+  }
+
   _authenticateRsa() {
     return this._signRsa(this._key.kid, this._key.private)
       .then(signature => this._getJwt(signature))
@@ -33,7 +37,7 @@ class Auth {
       const signer = createSign('RSA-SHA256');
       signer.update(message);
       signer.end();
-      const signature = signer.sign(privateKey, 'base64');
+      const signature = signer.sign(this._decodeKey(privateKey), 'base64');
       resolve(signature);
     });
   }
