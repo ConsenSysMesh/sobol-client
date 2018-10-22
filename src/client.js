@@ -1,7 +1,6 @@
 const Core = require('./core');
 
 class Client extends Core {
-
   /**
    * Extends the Core with a list of endpoints
    * @returns {object} this
