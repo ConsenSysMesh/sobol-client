@@ -10,9 +10,7 @@
     "start-node": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec node tests/node.js",
     "start-browser": "cross-env NODE_ENV=development webpack-dev-server --progress --open --mode development --config webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack -p --progress --mode production --config webpack.config.js",
-    "watch": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec npm run build",
-    "publish-locally": "npm link",
-    "publish-npm": ""
+    "watch": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",

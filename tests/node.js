@@ -2,7 +2,7 @@ const TmntApi = require('../src/index');
 const TmntClient = require('../src/client');
 
 // KEYS
-var key = {
+var key1 = {
   kid: '',
   private: '',
 };
@@ -14,7 +14,7 @@ var key2 = {
 
 // USE CLIENT DIRECTLY
 TmntApi.connect({
-  key,
+  key: key1,
   protocol: 'http',
   host: 'localhost',
 })
@@ -54,7 +54,7 @@ class MyClient extends TmntClient {
 const Client = new MyClient();
 
 Client.connect({
-  key,
+  key: key1,
   protocol: 'http',
   host: 'localhost',
 })
@@ -70,7 +70,7 @@ Client.connect({
 
 // TEST OTHER METHODS
 TmntApi.connect({
-  key,
+  key: key1,
   protocol: 'http',
   host: 'localhost',
 })

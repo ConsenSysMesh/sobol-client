@@ -1,5 +1,4 @@
 # TODO List
 
-1. Add build commands
-2. Add documentation
-3. Add ESLint
+1. Add ESLint
+2. Add licencing information

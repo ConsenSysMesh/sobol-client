@@ -3,11 +3,18 @@ const Request = require('./request');
 const pkg = require('../package.json');
 
 class Core {
+
+  /**
+   * Provides the core functionality of the client
+   * @returns {object} this
+   */
   constructor() {
     this._pkg = {
       name: pkg.name,
       version: pkg.version,
     };
+
+    return this;
   }
 
   /**
