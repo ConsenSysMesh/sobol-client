@@ -1,11 +1,12 @@
 const Auth = require('./auth');
 const Request = require('./request');
+const pkg = require('../package.json');
 
 class Core {
   constructor() {
     this._pkg = {
-      name: require('../package.json').name,
-      version: require('../package.json').version,
+      name: pkg.name,
+      version: pkg.version,
     };
   }
 
@@ -29,7 +30,7 @@ class Core {
       // properties
       this._key = params.key;
       this._protocol = params.protocol || `https`
-      this._host = params.host || 'consensys-mesh.ga';
+      this._host = params.host || 'consensys-mesh.com';
       this._namespace = params.namespace || 'api';
       this._version = params.version || 'v1';
       this._endpoint = params.endpoint || `${this._protocol}://${this._host}/${this._namespace}/${this._version}`;

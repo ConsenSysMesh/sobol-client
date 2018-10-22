@@ -32,11 +32,11 @@ TmntClient.connect({
   protocol: 'http',
   host: 'localhost',
 })
-  .then((client) => {
+  .then(function(client) {
     const{ user } = client.getSession();
     const { Users } = client;
     Users.find()
-      .then((res) => {
+      .then(function(res) {
         const users = res.data;
 
         // check for automated users
@@ -52,7 +52,9 @@ TmntClient.connect({
         client.disconnect();
       });
   })
-  .catch(e => console.error(e));
+  .catch(function(e) {
+    console.error(e)
+  });
 
 
 // TEST OTHER METHODS
@@ -61,11 +63,11 @@ TmntClient.connect({
   protocol: 'http',
   host: 'localhost',
 })
-  .then((client) => {
+  .then(function(client) {
     const clientJwt = client.getSession().jwt;
 
     return client.setKey(key2)
-      .then(client2 => {
+      .then(function(client2) {
         console.log('Set New Keys:', client2._key.kid);
 
         // SET NEW TOKEN
@@ -77,7 +79,9 @@ TmntClient.connect({
         console.log('Set New Org:', client2._orgId);
       });
   })
-  .catch(e => console.error(e));
+  .catch(function(e) {
+    console.error(e)
+  });
 
 </script>
 
