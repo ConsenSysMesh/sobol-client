@@ -3,7 +3,6 @@ const Request = require('./request');
 const pkg = require('../package.json');
 
 class Core {
-
   /**
    * Provides the core functionality of the client
    * @returns {object} this
@@ -108,6 +107,14 @@ class Core {
    */
   getSession() {
     return this._session;
+  }
+
+  /**
+   * Gets the current version of the client
+   * @returns {string} version
+   */
+  getVersion() {
+    return this._version;
   }
 
   /**

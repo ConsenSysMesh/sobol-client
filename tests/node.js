@@ -4,7 +4,7 @@ const TmntApi = require('../src/index');
 const TmntClient = require('../src/client');
 
 // KEYS
-var key1 = {
+const key1 = {
   kid: '',
   private: '',
 };
@@ -78,6 +78,7 @@ TmntApi.connect({
 })
   .then((client) => {
     const clientJwt = client.getSession().jwt;
+    console.log('Version:', client.getVersion());
 
     return client.setKey(key2)
       .then((client2) => {

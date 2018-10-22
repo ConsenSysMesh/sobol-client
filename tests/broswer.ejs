@@ -66,6 +66,7 @@ TmntClient.connect({
 })
   .then(function(client) {
     var clientJwt = client.getSession().jwt;
+    console.log('Version:', client.getVersion());
 
     return client.setKey(key2)
       .then(function(client2) {
