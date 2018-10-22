@@ -8,7 +8,7 @@
   <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 
-<h1>Welcome to the <%= htmlWebpackPlugin.options.title %></h1>
+<h1>Welcome to <%= htmlWebpackPlugin.options.title %></h1>
 <p>Open the console for more info.</p>
 
 </body>
@@ -16,7 +16,7 @@
 <script>
 
 // KEYS
-var key = {
+var key1 = {
   kid: '',
   private: '',
 };
@@ -28,13 +28,14 @@ var key2 = {
 
 // USE CLIENT DIRECTLY
 TmntClient.connect({
-  key,
+  key: key1,
   protocol: 'http',
   host: 'localhost',
 })
   .then(function(client) {
-    const{ user } = client.getSession();
-    const { Users } = client;
+    var user = client.getSession().user;
+    var Users = client.Users;
+
     Users.find()
       .then(function(res) {
         const users = res.data;
@@ -59,12 +60,12 @@ TmntClient.connect({
 
 // TEST OTHER METHODS
 TmntClient.connect({
-  key,
+  key: key1,
   protocol: 'http',
   host: 'localhost',
 })
   .then(function(client) {
-    const clientJwt = client.getSession().jwt;
+    var clientJwt = client.getSession().jwt;
 
     return client.setKey(key2)
       .then(function(client2) {
