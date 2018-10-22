@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const TmntApi = require('../src/index');
 const TmntClient = require('../src/client');
 
@@ -7,7 +9,7 @@ var key1 = {
   private: '',
 };
 
-var key2 = {
+const key2 = {
   kid: '',
   private: '',
 };
@@ -19,7 +21,7 @@ TmntApi.connect({
   host: 'localhost',
 })
   .then((client) => {
-    const{ user } = client.getSession();
+    const { user } = client.getSession();
     const { Users } = client;
     Users.find()
       .then((res) => {
@@ -28,10 +30,10 @@ TmntApi.connect({
         // check for automated users
         console.log(
           'Automated Users?',
-          (users.includes(user) ?
-            'Yup! That\'s bad :(' :
-            'Nope! Yay that\'s good!'
-          )
+          (users.includes(user)
+            ? 'Yup! That\'s bad :('
+            : 'Nope! Yay that\'s good!'
+          ),
         );
 
         // kill the session
@@ -40,7 +42,7 @@ TmntApi.connect({
   })
   .catch(e => console.error(e));
 
-// EXTEND AND USE THE CLIENT 
+// EXTEND AND USE THE CLIENT
 class MyClient extends TmntClient {
   constructor() {
     super();
@@ -78,7 +80,7 @@ TmntApi.connect({
     const clientJwt = client.getSession().jwt;
 
     return client.setKey(key2)
-      .then(client2 => {
+      .then((client2) => {
         console.log('Set New Keys:', client2._key.kid);
 
         // SET NEW TOKEN

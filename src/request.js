@@ -1,17 +1,16 @@
 const axios = require('axios');
 
 class Request {
-
   /**
-   * Extends the `axios` ajax library for use in the client 
+   * Extends the `axios` ajax library for use in the client
    * @param {string} endpoint (required)
    * @param {object} headers
    * @param {string} token
    * @returns {object} this
    */
-  constructor(endpoint, headers={}, token) {
+  constructor(endpoint, headers = {}, token) {
     if (!endpoint) throw new Error('Request requires an `endpoint`.');
-    this._endpoint = endpoint
+    this._endpoint = endpoint;
     this._headers = headers;
 
     if (token) {
@@ -26,7 +25,7 @@ class Request {
    * @param {object} error
    * @returns {void}
    */
-  _handleError(error) {  
+  _handleError(error) {
     throw error;
   }
 
@@ -36,7 +35,7 @@ class Request {
    * @returns {void}
    */
   setToken(token) {
-    const Authorization = (token ? `Bearer ${token}`: 'None');
+    const Authorization = (token ? `Bearer ${token}` : 'None');
     this._token = token;
     this._headers = {
       ...this._headers,

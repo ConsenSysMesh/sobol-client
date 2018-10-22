@@ -25,18 +25,18 @@ class Core {
   connect(params) {
     return new Promise((resolve) => {
       if (typeof params.key === 'undefined') {
-        throw new Error(`Invalid Param: ${this._pkg.name} requires a "key".`)
+        throw new Error(`Invalid Param: ${this._pkg.name} requires a "key".`);
       }
-  
+
       if (typeof params.key !== 'string') {
-        if (typeof params.key.kid === 'undefined' || typeof params.key.private === 'undefined' ) {
-          throw new Error(`Invalid Params: ${this._pkg.name} RSA auth requires a "key.kid" and a "key.private".`)
+        if (typeof params.key.kid === 'undefined' || typeof params.key.private === 'undefined') {
+          throw new Error(`Invalid Params: ${this._pkg.name} RSA auth requires a "key.kid" and a "key.private".`);
         }
       }
 
       // properties
       this._key = params.key;
-      this._protocol = params.protocol || `https`
+      this._protocol = params.protocol || 'https';
       this._host = params.host || 'consensys-mesh.com';
       this._namespace = params.namespace || 'api';
       this._version = params.version || 'v1';
@@ -44,11 +44,11 @@ class Core {
 
       // setters
       this.setOrg(params.orgId);
-  
+
       // libaries
       this._request = new Request(this._endpoint);
       this._auth = new Auth(this._endpoint);
-      
+
       // authenticate
       resolve(this._authenticate(this._key));
     });
@@ -125,10 +125,8 @@ class Core {
         // - if there are multiple, use this._orgId
         if (session.orgIds.length === 1) {
           this.setOrg(session.orgIds[0]);
-        } else {
-          if (!session.orgIds.includes(this._orgId)) {
-            throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`)
-          }
+        } else if (!session.orgIds.includes(this._orgId)) {
+          throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`);
         }
         this.setToken(session.jwt);
         return this;

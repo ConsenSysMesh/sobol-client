@@ -1,9 +1,8 @@
-const Request = require('./request');
 const { createSign } = require('crypto');
 const { decode, verify } = require('jsonwebtoken');
+const Request = require('./request');
 
 class Auth {
-
   /**
    * Employs cryptographic key signing to get a session
    * @param {string} endpoint (required)
@@ -27,7 +26,7 @@ class Auth {
     if (typeof key === 'string') {
       return this._verifyJwt(this._key);
     }
-    
+
     return this._authenticateRsa();
   }
 
@@ -55,9 +54,9 @@ class Auth {
   _authenticateRsa() {
     return this._signRsa(this._key.kid, this._key.private)
       .then(signature => this._getJwt(signature))
-      .then(encodedJwt => {
+      .then((encodedJwt) => {
         const decodedJwt = decode(encodedJwt);
-        return { ...decodedJwt, jwt: encodedJwt }
+        return { ...decodedJwt, jwt: encodedJwt };
       });
   }
 
@@ -83,14 +82,14 @@ class Auth {
    * @returns {promise} encodedJwt
    */
   _getJwt(signature) {
-    return this._request.post(`/login/`, {
+    return this._request.post('/login/', {
       type: 'rsa',
       authorization: {
         signature,
         kid: this._key.kid,
         alg: 'rsa-sha256',
-        sig: 'base64'
-      }
+        sig: 'base64',
+      },
     })
       .then(response => response.data);
   }
@@ -116,7 +115,7 @@ class Auth {
               } else {
                 resolve({ ...decodedJwt, jwt: encodedJwt });
               }
-            }
+            },
           );
         });
     });
