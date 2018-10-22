@@ -9,13 +9,13 @@ const DEV_MODE = process.env.NODE_ENV === 'development';
 module.exports = {
   devtool: DEV_MODE ? 'inline-source-map' : 'source-map',
   entry: {
-    browser: './src/browser',
+    browser: './src/index',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: `${pkg.name}-[name].js`,
+    filename: `${pkg.name}.js`,
     libraryTarget: 'var',
-    library: 'TmntApi',
+    library: 'TmntClient',
   },
   module: {
     rules: [
@@ -47,7 +47,7 @@ module.exports = {
 
     if (process.env.NODE_ENV === 'development') {
       plugins.push(new HtmlWebPackPlugin({
-        title: 'TMNT API Client',
+        title: 'TMNT Client',
         filename: 'index.html',
         template: 'tests/broswer.ejs',
         favicon: false,
