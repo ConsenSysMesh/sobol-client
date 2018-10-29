@@ -1,11 +1,11 @@
-# TMNT Client
+# Sobol Client
 
-A JavaScript client library exposing TMNT's RESTful API.
+A JavaScript client library exposing Sobol's RESTful API.
 
 ## Install
 
 ```bash
-npm install tmnt-client
+npm install sobol-client
 ```
 
 Then include in:
@@ -13,12 +13,12 @@ Then include in:
 **Node**:
 
 ```javascript
-const TmntClient = require('tmnt-client');
+const SobolClient = require('sobol-client');
 ```
 
 **Browser**:
 ```html
-<script src="./node_modules/tmnt-client/dist/tmnt-client.js">
+<script src="./node_modules/sobol-client/dist/sobol-client.js">
 ```
 
 ## Connect
@@ -26,7 +26,7 @@ const TmntClient = require('tmnt-client');
 API access is granted with the use of [API Keys](docs/keys.md) as follows:
 
 ```javascript
-TmntClient.connect({
+SobolClient.connect({
   key: {
     private: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUpR...',
     kid: '_SkDk2GrZ',
@@ -39,7 +39,7 @@ TmntClient.connect({
     console.error(error);
   });
 ```
-**Note**: To obtain keys, contact tmnt@consensys.net.
+**Note**: To obtain keys, contact sobol@consensys.net.
 
 ## Query
 
@@ -58,9 +58,9 @@ Users.find()
     // check for automated users
     console.log(
       'Automated Users?',
-      (users.includes(user) ?
-        'Yup! That\'s bad :(' :
-        'Nope! Yay that\'s good!'
+      (users.includes(user)
+        ? 'Yup! That\'s bad :('
+        : 'Nope! Yay that\'s good!'
       )
     );
     
@@ -76,9 +76,9 @@ To extend this library, create a subclass as follows:
 ```javascript
 // client.js
 
-const TmntClient = require('tmnt-client/src/client');
+const SobolClient = require('sobol-client/src/client');
 
-class MyClient extends TmntClient {
+class MyClient extends SobolClient {
   constructor() {
     super();
 
@@ -121,7 +121,7 @@ MyClient.connect({
 - Clone repository
 - Install dependencies with: `npm install`
 
-**Run**: ([API Keys](docs/keys.md) required)
+**Run**: (include keys in `./tests/*.js`)
 - Node: `npm run start-node`
 - Browser: `npm run start-browser`
 
@@ -132,7 +132,4 @@ MyClient.connect({
 **Publish**:
 
 - Locally: `npm link`
-- NPM: Coming soon :)
-
-<hr>
-Cowabunga dude!
+- NPM: `npm publish`

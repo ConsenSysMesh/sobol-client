@@ -3,7 +3,6 @@ const Request = require('./request');
 const pkg = require('../package.json');
 
 class Core {
-
   /**
    * Provides the core functionality of the client
    * @returns {object} this
@@ -15,6 +14,29 @@ class Core {
     };
 
     return this;
+  }
+
+  /**
+   * Authenticates key and issues a new session
+   * @param {string | object} key
+   * @returns {object} this
+   */
+  _authenticate(key) {
+    return this._auth.authenticate(key)
+      .then((session) => {
+        this._session = session;
+
+        // handle orgIds
+        // - if there is one, use it
+        // - if there are multiple, enforce this._orgId
+        if (session.orgIds.length === 1) {
+          this.setOrg(session.orgIds[0]);
+        } else if (!session.orgIds.includes(this._orgId)) {
+          throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`);
+        }
+        this.setToken(session.jwt);
+        return this;
+      });
   }
 
   /**
@@ -111,26 +133,11 @@ class Core {
   }
 
   /**
-   * Authenticates key and issues a new session
-   * @param {string | object} key
-   * @returns {object} this
+   * Gets the current version of the client
+   * @returns {string} version
    */
-  _authenticate(key) {
-    return this._auth.authenticate(key)
-      .then((session) => {
-        this._session = session;
-
-        // handle orgIds
-        // - if there is one, use it
-        // - if there are multiple, use this._orgId
-        if (session.orgIds.length === 1) {
-          this.setOrg(session.orgIds[0]);
-        } else if (!session.orgIds.includes(this._orgId)) {
-          throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`);
-        }
-        this.setToken(session.jwt);
-        return this;
-      });
+  getVersion() {
+    return this._version;
   }
 }
 

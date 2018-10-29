@@ -62,14 +62,14 @@ class Auth {
 
   /**
    * Generates a RSA signature
-   * @param {string} message
+   * @param {string} kid
    * @param {string} privateKey
    * @returns {promise} signature
    */
-  _signRsa(message, privateKey) {
+  _signRsa(kid, privateKey) {
     return new Promise((resolve) => {
       const signer = createSign('RSA-SHA256');
-      signer.update(message);
+      signer.update(kid);
       signer.end();
       const signature = signer.sign(this._decodeKey(privateKey), 'base64');
       resolve(signature);
@@ -103,11 +103,11 @@ class Auth {
     return new Promise((resolve, reject) => {
       this._request.get('/login/jwt-public-key')
         .then((response) => {
-          const privateKey = response.data.keys[0].key;
+          const publicKey = response.data.keys[0].key;
 
           verify(
             encodedJwt,
-            privateKey,
+            publicKey,
             { algorithms: ['RS256'] },
             (err, decodedJwt) => {
               if (err) {

@@ -1,17 +1,17 @@
 {
-  "name": "tmnt-client",
+  "name": "sobol-client",
   "version": "0.0.1",
-  "description": "A JavaScript client library exposing TMNT's RESTful API.",
+  "description": "A JavaScript client library exposing Sobol's RESTful API.",
   "main": "src/index.js",
-  "repository": "git@github.com:ProjectPeter/tmnt-client.git",
-  "author": "TMNT",
+  "repository": "git@github.com:ProjectPeter/sobol-client.git",
+  "author": "Sobol",
   "license": "MIT",
   "scripts": {
     "start-node": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec node tests/node.js",
     "start-browser": "cross-env NODE_ENV=development webpack-dev-server --progress --open --mode development --config webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack -p --progress --mode production --config webpack.config.js",
     "watch": "cross-env NODE_ENV=development nodemon --watch src --watch tests --exec npm run build",
-    "lint": "eslint ./src/ ./tests/node.js"
+    "lint": "eslint ./src/ ./tests/"
   },
   "dependencies": {
     "axios": "^0.18.0",

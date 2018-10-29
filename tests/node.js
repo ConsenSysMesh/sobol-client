@@ -1,10 +1,10 @@
 /* eslint no-console: 0 */
 
-const TmntApi = require('../src/index');
-const TmntClient = require('../src/client');
+const SobolApi = require('../src/index');
+const SobolClient = require('../src/client');
 
 // KEYS
-var key1 = {
+const key1 = {
   kid: '',
   private: '',
 };
@@ -15,7 +15,7 @@ const key2 = {
 };
 
 // USE CLIENT DIRECTLY
-TmntApi.connect({
+SobolApi.connect({
   key: key1,
   protocol: 'http',
   host: 'localhost',
@@ -43,7 +43,7 @@ TmntApi.connect({
   .catch(e => console.error(e));
 
 // EXTEND AND USE THE CLIENT
-class MyClient extends TmntClient {
+class MyClient extends SobolClient {
   constructor() {
     super();
 
@@ -71,13 +71,14 @@ Client.connect({
   .catch(e => console.error(e));
 
 // TEST OTHER METHODS
-TmntApi.connect({
+SobolApi.connect({
   key: key1,
   protocol: 'http',
   host: 'localhost',
 })
   .then((client) => {
     const clientJwt = client.getSession().jwt;
+    console.log('Version:', client.getVersion());
 
     return client.setKey(key2)
       .then((client2) => {

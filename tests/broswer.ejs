@@ -27,7 +27,7 @@ var key2 = {
 };
 
 // USE CLIENT DIRECTLY
-TmntClient.connect({
+SobolClient.connect({
   key: key1,
   protocol: 'http',
   host: 'localhost',
@@ -43,9 +43,9 @@ TmntClient.connect({
         // check for automated users
         console.log(
           'Automated Users?',
-          (users.includes(user) ?
-            'Yup! That\'s bad :(' :
-            'Nope! Yay that\'s good!'
+          (users.includes(user)
+            ? 'Yup! That\'s bad :('
+            : 'Nope! Yay that\'s good!'
           )
         );
 
@@ -59,13 +59,14 @@ TmntClient.connect({
 
 
 // TEST OTHER METHODS
-TmntClient.connect({
+SobolClient.connect({
   key: key1,
   protocol: 'http',
   host: 'localhost',
 })
   .then(function(client) {
     var clientJwt = client.getSession().jwt;
+    console.log('Version:', client.getVersion());
 
     return client.setKey(key2)
       .then(function(client2) {

@@ -1,5 +1,5 @@
 /**
- * Exports a singleton instance of `Client`
+ * Exports a singleton
  */
 const Client = require('./client');
 
