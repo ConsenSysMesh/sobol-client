@@ -1,13 +1,13 @@
 # API Keys
 
-To access TMNT's API layer, you must be issued `API Keys`.
+To access Sobol's API layer, you must be issued `API Keys`.
 Use these keys **manually** or with the **client**.
 
-**Note**: To obtain keys, contact tmnt@consensys.net.
+**Note**: To obtain keys, contact sobol@consensys.net.
 
 ## RSA Key Pairs
 
-TMNT uses [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) key signing to authenticate with the API. These keys are as follows:
+Sobol uses [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) key signing to authenticate with the API. These keys are as follows:
 
 ```json
 {
@@ -24,15 +24,15 @@ TMNT uses [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) key signing to
   }
 }
 ```
-**Please Note**: The RSA key pairs are encoded in `base64` and will have to be decoded when used with most [RSA signing libraries](#libraries).
+**Note**: The RSA key pairs are encoded in `base64` and will have to be decoded when used with most RSA signing [libraries](#libraries).
 
 ## Authorization
 
 The client performs the following steps to authenticate:
 
 1. Decodes the supplied `private` key from `base64` to `ascii`
-2. Signs a `base64` encoded **RSA SHA256 Signature** using the `kid` and the `private` key
-2. `POST` to https://consensys-mesh.com/api/v1/login/ including the following in the `body`:
+2. Signs a `base64` encoded `SHA256 signature` using the `kid` and the `private` key
+2. `POST`s the following `body` to https://consensys-mesh.com/api/v1/login/ :
 
 ```json
 {
@@ -44,7 +44,7 @@ The client performs the following steps to authenticate:
 }
 ```
 
-3. Waits for the API to respond with a [JWT](https://jwt.io/). That JWT is then included as part of the header of every subsequent request as follows:
+3. Includes the returned [JWT](https://jwt.io/) in every subsequent request as follows:
 
 ```json
 {
@@ -52,7 +52,7 @@ The client performs the following steps to authenticate:
 }
 ```
 
-4. Decodes the JWT to get the session information:
+4. Decodes session information from the JWT resulting in:
 
 ```json
 {
@@ -62,14 +62,7 @@ The client performs the following steps to authenticate:
 }
 ```
 
-## Verify a JWT
-
-To verify if a JWT is still valid:
-
-1. `GET` the TMNT public keys at https://consensys-mesh.com/api/v1/login/jwt-public-key
-2. Use a JWT libary to verify the JWT against the public key
-
-### Libraries
+## Libraries
 
 * [JWT](https://jwt.io/)
 * [OpenSSL](https://www.openssl.org/)
