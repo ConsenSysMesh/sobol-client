@@ -17,6 +17,29 @@ class Core {
   }
 
   /**
+   * Authenticates key and issues a new session
+   * @param {string | object} key
+   * @returns {object} this
+   */
+  _authenticate(key) {
+    return this._auth.authenticate(key)
+      .then((session) => {
+        this._session = session;
+
+        // handle orgIds
+        // - if there is one, use it
+        // - if there are multiple, enforce this._orgId
+        if (session.orgIds.length === 1) {
+          this.setOrg(session.orgIds[0]);
+        } else if (!session.orgIds.includes(this._orgId)) {
+          throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`);
+        }
+        this.setToken(session.jwt);
+        return this;
+      });
+  }
+
+  /**
    * Creates a new session
    * @param {object} params
    * @returns {promise} client
@@ -115,29 +138,6 @@ class Core {
    */
   getVersion() {
     return this._version;
-  }
-
-  /**
-   * Authenticates key and issues a new session
-   * @param {string | object} key
-   * @returns {object} this
-   */
-  _authenticate(key) {
-    return this._auth.authenticate(key)
-      .then((session) => {
-        this._session = session;
-
-        // handle orgIds
-        // - if there is one, use it
-        // - if there are multiple, use this._orgId
-        if (session.orgIds.length === 1) {
-          this.setOrg(session.orgIds[0]);
-        } else if (!session.orgIds.includes(this._orgId)) {
-          throw new Error(`Invalid Param: ${this._pkg.name} requires a valid "orgId".`);
-        }
-        this.setToken(session.jwt);
-        return this;
-      });
   }
 }
 
