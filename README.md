@@ -39,7 +39,7 @@ SobolClient.connect({
     console.error(error);
   });
 ```
-**Note**: To obtain keys, contact sobol@consensys.net.
+**Note**: To obtain keys, contact team@sobol.io.
 
 ## Query
 
