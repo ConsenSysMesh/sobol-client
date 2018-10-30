@@ -8,29 +8,82 @@
   <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 
-<h1>Welcome to the <%= htmlWebpackPlugin.options.title %></h1>
+<h1>Welcome to <%= htmlWebpackPlugin.options.title %></h1>
+<p>Open the console for more info.</p>
 
 </body>
 
 <script>
 
-  var rsa = {
-    private: '',
-    kid: '',
-  };
+// KEYS
+var key1 = {
+  kid: '',
+  private: '',
+};
 
-  var jwt = '';
+var key2 = {
+  kid: '',
+  private: '',
+};
 
-  TmntApi.connect({
-    key: rsa,
-    protocol: 'http',
-    host: 'localhost',
+// USE CLIENT DIRECTLY
+SobolClient.connect({
+  key: key1,
+  protocol: 'http',
+  host: 'localhost',
+})
+  .then(function(client) {
+    var user = client.getSession().user;
+    var Users = client.Users;
+
+    Users.find()
+      .then(function(res) {
+        const users = res.data;
+
+        // check for automated users
+        console.log(
+          'Automated Users?',
+          (users.includes(user)
+            ? 'Yup! That\'s bad :('
+            : 'Nope! Yay that\'s good!'
+          )
+        );
+
+        // kill the session
+        client.disconnect();
+      });
   })
-    .then((client) => {
-      console.log(client.getSession());
-      client.Users.find()
-        .then(users => console.log(users.data));
-    });
+  .catch(function(e) {
+    console.error(e)
+  });
+
+
+// TEST OTHER METHODS
+SobolClient.connect({
+  key: key1,
+  protocol: 'http',
+  host: 'localhost',
+})
+  .then(function(client) {
+    var clientJwt = client.getSession().jwt;
+    console.log('Version:', client.getVersion());
+
+    return client.setKey(key2)
+      .then(function(client2) {
+        console.log('Set New Keys:', client2._key.kid);
+
+        // SET NEW TOKEN
+        client2.setToken(clientJwt);
+        console.log('Set New Token:', client2.getSession().jwt);
+
+        // Set New Org
+        client2.setOrg('NewOrg');
+        console.log('Set New Org:', client2._orgId);
+      });
+  })
+  .catch(function(e) {
+    console.error(e)
+  });
 
 </script>
 
