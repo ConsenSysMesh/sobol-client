@@ -59,7 +59,7 @@ class Core {
       // properties
       this._key = params.key;
       this._protocol = params.protocol || 'https';
-      this._host = params.host || 'consensys-mesh.com';
+      this._host = params.host || 'sobol.io/d';
       this._namespace = params.namespace || 'api';
       this._version = params.version || 'v1';
       this._endpoint = params.endpoint || `${this._protocol}://${this._host}/${this._namespace}/${this._version}`;
