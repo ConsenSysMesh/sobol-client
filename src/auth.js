@@ -52,8 +52,9 @@ class Auth {
    * @returns {promise} session
    */
   _authenticateRsa() {
-    return this._signRsa(this._key.kid, this._key.private)
-      .then(signature => this._getJwt(signature))
+    const timestamp = Date.now();
+    return this._signRsa(this._key.kid, timestamp, this._key.private)
+      .then(signature => this._getJwt(signature, timestamp))
       .then((encodedJwt) => {
         const decodedJwt = decode(encodedJwt);
         return { ...decodedJwt, jwt: encodedJwt };
@@ -62,14 +63,15 @@ class Auth {
 
   /**
    * Generates a RSA signature
-   * @param {string} kid
+   * @param {string} message
+   * @param {date} timestamp
    * @param {string} privateKey
    * @returns {promise} signature
    */
-  _signRsa(kid, privateKey) {
+  _signRsa(message, timestamp, privateKey) {
     return new Promise((resolve) => {
       const signer = createSign('RSA-SHA256');
-      signer.update(kid);
+      signer.update(message + timestamp);
       signer.end();
       const signature = signer.sign(this._decodeKey(privateKey), 'base64');
       resolve(signature);
@@ -79,13 +81,15 @@ class Auth {
   /**
    * Validates signature with API and gets back a JWT
    * @param {string} signature
+   * @param {date} timestamp
    * @returns {promise} encodedJwt
    */
-  _getJwt(signature) {
+  _getJwt(signature, timestamp) {
     return this._request.post('/login/', {
       type: 'rsa',
       authorization: {
         signature,
+        timestamp,
         kid: this._key.kid,
         alg: 'rsa-sha256',
         sig: 'base64',
