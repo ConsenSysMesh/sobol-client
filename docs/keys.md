@@ -3,7 +3,7 @@
 To access Sobol's API layer, you must be issued `API Keys`.
 Use these keys **manually** or with the **client**.
 
-**Note**: To obtain keys, contact sobol@consensys.net.
+**Note**: To obtain keys, contact team@sobol.io.
 
 ## RSA Key Pairs
 
@@ -30,21 +30,24 @@ Sobol uses [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) key signing t
 
 The client performs the following steps to authenticate:
 
-1. Decodes the supplied `private` key from `base64` to `ascii`
-2. Signs a `base64` encoded `SHA256 signature` using the `kid` and the `private` key
-2. `POST`s the following `body` to https://consensys-mesh.com/api/v1/login/ :
+- Decodes the supplied `private` key from `base64` to `ascii`
+- Creates a `base64` encoded `SHA256 signature` with the following:
+  - `message` - `kid` plus the current `unix timestamp`
+  - `private` key
+- `POST`s the following `body` to https://sobol.io/d/api/v1/login/ :
 
 ```json
 {
   "type": "rsa",
   "authorization": {
     "signature": "OiJSUzI1NiIDfFdEadfdfsInR5cCI...",
-    "kid": "_4kDg2GrZ"
+    "kid": "_4kDg2GrZ",
+    "timestamp": "1541735825169"
   }
 }
 ```
 
-3. Includes the returned [JWT](https://jwt.io/) in every subsequent request as follows:
+- Includes the returned [JWT](https://jwt.io/) in every subsequent request as follows:
 
 ```json
 {
@@ -52,7 +55,7 @@ The client performs the following steps to authenticate:
 }
 ```
 
-4. Decodes session information from the JWT resulting in:
+- Decodes session information from the JWT resulting in:
 
 ```json
 {
