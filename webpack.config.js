@@ -7,22 +7,47 @@ const pkg = require('./package.json');
 const DEV_MODE = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  devtool: DEV_MODE ? 'inline-source-map' : 'source-map',
+  devtool: DEV_MODE ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    browser: './src/index',
+    browser: './base/index',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'browser'),
     filename: `${pkg.name}.js`,
     libraryTarget: 'var',
     library: 'SobolClient',
   },
   module: {
     rules: [
+      { parser: { requireEnsure: false } },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
+        enforce: 'pre',
+        use: [
+          {
+            options: {
+              eslintPath: require.resolve('eslint'),
+              failOnWarning: true,
+            },
+            loader: require.resolve('eslint-loader'),
+          },
+        ],
+      },
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+            options: {
+              configFile: path.resolve(__dirname, 'babel.config.js'),
+              babelrc: false,
+              cacheDirectory: true,
+              cacheCompression: !DEV_MODE,
+              compact: !DEV_MODE,
+              sourceMaps: true,
+            },
+          },
+        ],
       },
     ],
   },
@@ -30,26 +55,22 @@ module.exports = {
     minimizer: [new UglifyJsPlugin({
       sourceMap: true,
       uglifyOptions: {
-        warnings: false,
         output: {
           comments: false,
         },
       },
     })],
   },
-  performance: {
-    hints: false,
-  },
   plugins: (() => {
     const plugins = [
-      new CleanWebpackPlugin(['dist']),
+      new CleanWebpackPlugin(['browser']),
     ];
 
     if (process.env.NODE_ENV === 'development') {
       plugins.push(new HtmlWebPackPlugin({
         title: 'Sobol Client',
         filename: 'index.html',
-        template: 'tests/broswer.ejs',
+        template: 'examples/broswer.ejs',
         favicon: false,
       }));
     }
