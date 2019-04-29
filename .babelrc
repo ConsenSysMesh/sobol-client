@@ -1,5 +1,0 @@
-{
-  "presets": ["@babel/env"],
-  "sourceMaps": true,
-  "retainLines": true
-}
