@@ -1,6 +1,6 @@
 /**
  * Exports a singleton
  */
-const Client = require('./client');
+const Client = require('./base');
 
 module.exports = new Client();

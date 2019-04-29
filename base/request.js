@@ -8,39 +8,24 @@ class Request {
    * @param {string} token
    * @returns {object} this
    */
-  constructor(endpoint, headers = {}, token) {
-    if (!endpoint) throw new Error('Request requires an `endpoint`.');
-    this._endpoint = endpoint;
-    this._headers = headers;
+  configure(params) {
+    this._endpoint = params.endpoint || this._endpoint || '';
+    this._headers = params.headers || this._headers || {};
+    this._key = params.key || this._key || null;
 
-    if (token) {
-      this.setToken(token);
-    }
+    if (params.errorHandler) this._setErrorHandler(params.errorHandler);
+    this._setAuthHeader();
 
     return this;
   }
 
   /**
-   * Throws all request errors
-   * @param {object} error
-   * @returns {void}
+   * Destroys the request instance
+   * @returns {object} this
    */
-  _handleError(error) {
-    throw error;
-  }
-
-  /**
-   * Sets the authentication header
-   * @param {string} token
-   * @returns {void}
-   */
-  setToken(token) {
-    const Authorization = (token ? `Bearer ${token}` : 'None');
-    this._token = token;
-    this._headers = {
-      ...this._headers,
-      Authorization,
-    };
+  destroy() {
+    if (this._headers.Authorization) delete this._headers.Authorization;
+    return this;
   }
 
   /**
@@ -87,6 +72,41 @@ class Request {
     return axios.delete(`${this._endpoint}${path}`, {
       headers: this._headers,
     }).catch(this._handleError);
+  }
+
+  /**
+   * PRIVATE METHODS
+   * ======================================================
+   */
+
+  /**
+   * Handles all request errors
+   * @param {object} error
+   * @returns {object} error
+   */
+  _handleError(error) {
+    return Promise.reject(error);
+  }
+
+  /**
+   * Sets the authentication header
+   * @param {string} token
+   * @returns {void}
+   */
+  _setAuthHeader() {
+    this._headers = {
+      ...this._headers,
+      Authorization: (this._key ? `Bearer ${this._key}` : 'None'),
+    };
+  }
+
+  /**
+   * Sets the error handler
+   * @param {funciton} handler
+   * @returns {void}
+   */
+  _setErrorHandler(handler) {
+    if (handler) this._handleError = handler;
   }
 }
 
