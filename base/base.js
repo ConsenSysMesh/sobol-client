@@ -41,10 +41,10 @@ class Base {
    */
   configure(params) {
     return new Promise((resolve) => {
-      if (params.protocol) this._dreprecateProp('protocol', 'endpoint');
-      if (params.host) this._dreprecateProp('host', 'endpoint');
-      if (params.namespace) this._dreprecateProp('namespace', 'endpoint');
-      if (params.version) this._dreprecateProp('version', 'endpoint');
+      if (params.protocol) this._deprecateProp('protocol', 'endpoint');
+      if (params.host) this._deprecateProp('host', 'endpoint');
+      if (params.namespace) this._deprecateProp('namespace', 'endpoint');
+      if (params.version) this._deprecateProp('version', 'endpoint');
 
       // configure core
       this._key = params.key || this._key || null;
@@ -210,7 +210,7 @@ class Base {
    * @param {object} params
    * @returns {promise} newMethod
    */
-  _dreprecateProp(prop, newProp) {
+  _deprecateProp(prop, newProp) {
     warn(`[${PKG_NAME}] ... "${prop}" property has been deprecated. Please use the "${newProp}" property instead.`);
   }
 
