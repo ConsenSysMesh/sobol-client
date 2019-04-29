@@ -113,13 +113,24 @@ class Base {
 
   /**
    * Gets the raw jwt - useful for generating authenticated links
-   * @returns {object} session
+   * @returns {string} key
    */
   getKey() {
     if (this._isInitializing) {
-      warn(`[${PKG_NAME}] ... run "configure()" to set a key before running "getSession()"`);
+      warn(`[${PKG_NAME}] ... run "configure()" to set a key before running "getKey()"`);
     }
     return this._key;
+  }
+
+  /**
+   * Gets the orgId
+   * @returns {string} orgId
+   */
+  getOrgId() {
+    if (this._isInitializing) {
+      warn(`[${PKG_NAME}] ... run "configure()" to set a key before running "getOrgId()"`);
+    }
+    return this._orgId;
   }
 
   /**
