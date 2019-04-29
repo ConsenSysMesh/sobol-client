@@ -30,13 +30,13 @@ Client.connect({
 
     return Client.setKey(apiKey)
       .then((updatedClient) => {
-        log('Set New Keys:', updatedClient._key);
+        log('Set New Keys:', updatedClient.getKey());
 
         updatedClient.setToken(apiKey);
         log('Set New Token:', updatedClient.getSession());
 
         updatedClient.setOrg('NewOrg');
-        log('Set New Org:', updatedClient._orgId);
+        log('Set New Org:', updatedClient.getOrgId());
       });
   })
   .catch(e => error(e));
