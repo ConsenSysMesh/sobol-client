@@ -71,6 +71,7 @@ class Client extends Base {
      */
     this.Roles = {
       find: params => this._request.get(`${this._orgPath}/roles${buildQuery(params)}`),
+      findById: roleId => this._request.get(`${this._orgPath}/roles/${roleId}`),
       create: role => this._request.post(`${this._orgPath}/roles`, role),
       update: role => this._request.put(`${this._orgPath}/roles/${role._id}`, role),
       delete: roleId => this._request.delete(`${this._orgPath}/roles/${roleId}`),
