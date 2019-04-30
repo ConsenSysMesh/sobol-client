@@ -31,7 +31,7 @@ const Client = require('sobol-client');
 
 ## configure()
 
-The configure function can be called at any time and allows you to set the `API Key` as follows:
+The configure function can be called at any time and allows you to pass options such as the `API Key` as follows:
 
 ```javascript
 Client.configure({
@@ -58,19 +58,6 @@ Client.configure({
 | `headers`      | Object   | Request Headers | `{}`                        |
 | `orgId`        | String   | Organization ID | `''`                        |
 | `errorHandler` | Function | Error Handler   | `Promise.reject(err)`       |
-
-## destroy()
-
-The destroy function can be called once to dismantle the current instance as follows:
-
-```javascript
-Client.configure({
-  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
-})
-  .then(function() {
-    Client.destroy();
-  })
-```
 
 ## Query
 
@@ -143,6 +130,19 @@ MyClient.configure({
   });
 ```
 **Note**: the browser distribution can not be extended.
+
+## destroy()
+
+The destroy function can be called once to dismantle the current instance as follows:
+
+```javascript
+Client.configure({
+  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
+})
+  .then(function() {
+    Client.destroy();
+  })
+```
 
 ## Examples
 
