@@ -13,82 +13,103 @@ Then include in:
 **Node**:
 
 ```javascript
-const SobolClient = require('sobol-client');
+const Client = require('sobol-client');
 ```
 
 **Browser**:
 ```html
-<script src="./node_modules/sobol-client/dist/sobol-client.js">
+<!-- include library -->
+<script type="text/javascript" src="./node_modules/sobol-client/browser/sobol-client.js"></script>
+
+<!-- instantiate the client -->
+<script type="text/javascript">
+  var Client = new SobolClient();
+
+  // ...
+</script>
 ```
 
-## Connect
+## configure()
 
-API access is granted with the use of [API Keys](docs/keys.md) as follows:
+The configure function can be called at any time and allows you to pass options such as the `API Key` as follows:
 
 ```javascript
-SobolClient.connect({
-  key: {
-    private: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUpR...',
-    kid: '_SkDk2GrZ',
-  },
+Client.configure({
+  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
 })
-  .then((client) => {
-    console.log(client.getSession());
+  .then(function() {
+    console.log('Session' + Client.getSession());
+    console.log('Version' + Client.getVersion());
+
+    // ...
   })
-  .catch((error) => {
+  .catch(function(error) {
     console.error(error);
   });
 ```
-**Note**: To obtain keys, contact team@sobol.io.
+**Note**: to obtain a key, please email us at team@sobol.io.
+
+### Options
+
+| Option         | Type     | Description     | Default                     |
+|----------------|----------|-----------------|-----------------------------|
+| `key`          | String   | API Key         | `''`                        |
+| `endpoint`     | String   | API Endpoint    | `https://sobol.io/d/api/v1` |
+| `headers`      | Object   | Request Headers | `{}`                        |
+| `orgId`        | String   | Organization ID | `''`                        |
+| `errorHandler` | Function | Error Handler   | `Promise.reject(err)`       |
 
 ## Query
 
-To query the API, refer to the following list of endpoints and operations in [client.js](src/client.js).
+To query the API, refer to the following list of endpoints and operations in [base/index.js](base/index.js).  
 
-E.g.:
+Usage:
 
 ```javascript
-const { Users } = client;
-const { user } = client.getSession();
-
-Users.find()
-  .then((res) => {
-    const users = res.data;
-
-    // check for automated users
-    console.log(
-      'Automated Users?',
-      (users.includes(user)
-        ? 'Yup! That\'s bad :('
-        : 'Nope! Yay that\'s good!'
-      )
-    );
-    
-    // kill the session
-    client.disconnect();
-  });
+Client.configure({
+  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
+})
+  .then(function() {
+    Client.Users.find()
+      .then(function(res) {
+        console.log('Sobol has ' + res.data.length + ' users.');
+      })
+      .catch(function(error) {
+        console.error('Network Error: ' + error.response.data);
+      });
+  })
 ```
+**Note**: responses use the [Axios Response Schema](https://github.com/axios/axios#response-schema).
 
-## Extend
+## Helper Functions
 
-To extend this library, create a subclass as follows: 
+Use these functions to get information about the current instance as follows:
+
+1. `getSession()` - returns the current session
+2. `getKey()` - returns the current key
+3. `getOrgId()` - returns the current organization Id
+4. `getVersion()` - returns the current version
+
+## Extending the Client
+
+To extend the library, create a subclass as follows:
 
 ```javascript
 // client.js
 
-const SobolClient = require('sobol-client/src/client');
+const BaseClient = require('sobol-client/base');
 
-class MyClient extends SobolClient {
+class MyClient extends BaseClient {
   constructor() {
     super();
 
-    this.Applications = {
-      find: () => this._request.get(`${this._orgPath}/applications`),
+    this.CustomEndpoints = {
+      version: () => this._request.get('version'),
     };
   }
 }
 
-module.exports = new Client(); // instantiates a singleton
+module.exports = new MyClient();
 ```
 
 Then use in:
@@ -98,38 +119,38 @@ Then use in:
 
 const MyClient = require('./client.js');
 
-MyClient.connect({
-  key: {
-    private: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUpR...',
-    kid: '_SkDk2GrZ',
-  },
+MyClient.configure({
+  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
 })
-  .then((client) => {
-    const { Applications } = client;
-
-    return Applications.find()
+  .then(() => {
+    MyClient.CustomEndpoints.version()
       .then((res) => {
-        console.log('Applications:', res.data);
+        console.log('Sobol Version: ', res.data);
       });
   });
 ```
-**Note**: the browser distribution can not be extended directly.
+**Note**: the browser distribution can not be extended.
 
-## Development
+## destroy()
 
-**Install:**
-- Clone repository
-- Install dependencies with: `npm install`
+The destroy function can be called once to dismantle the current instance as follows:
 
-**Run**: (include keys in `./tests/*.js`)
+```javascript
+Client.configure({
+  key: 'eyJhbGciOiJSUzI1NiIsI5cCI6IkpXVCJ9...',
+})
+  .then(function() {
+    Client.destroy();
+  })
+```
+
+## Examples
+
+To see a list of examples, please refer to the `examples` folder and run:
+
 - Node: `npm run start-node`
 - Browser: `npm run start-browser`
 
-**Build**:
-- Build browser distribution: `npm run build`
-- Build and watch: `npm run watch`
+## Help and Feedback
 
-**Publish**:
-
-- Locally: `npm link`
-- NPM: `npm publish`
+For help and feedback, please send us an email to team@sobol.io and we will respond as soon as possible.

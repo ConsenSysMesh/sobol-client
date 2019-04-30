@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title><%= htmlWebpackPlugin.options.title %> - Browser Example</title>
+</head>
+
+<h1><%= htmlWebpackPlugin.options.title %> - Browser Example</h1>
+<p>Output: </p>
+
+<div id="output"></div>
+
+</body>
+
+<script>
+
+var key = '';
+var el = document.getElementById('output');
+
+// handle errors
+function handleError(err) {
+  if (err.response && err.response.data) {
+    el.innerHTML += 'Error: ' + err.response.data + '<br />';
+  } else {
+    el.innerHTML += 'Error: ' + err.message + '<br />';
+  }
+};
+
+// instantiate a client
+var Client = new SobolClient();
+
+// basic usage
+Client.configure({
+  key: key,
+})
+  .then(function() {
+    el.innerHTML += '<h2>Sobol Client ' + Client.getVersion() + '</h2><br />';
+    var session = Client.getSession();
+    var version = Client.getVersion();
+    var log = console.log;
+
+    log('Version: ' + version);
+    log('Org: ' + session.oid);
+
+    Client.Applications.find()
+      .then((res) => {
+        el.innerHTML += 'Applications: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+
+    Client.Users.find()
+      .then((res) => {
+        el.innerHTML += 'Users: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+
+    Client.Teams.find()
+      .then((res) => {
+        el.innerHTML += 'Teams: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+
+    Client.Roles.find()
+      .then((res) => {
+        el.innerHTML += 'Roles: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+
+    Client.Goals.find()
+      .then((res) => {
+        el.innerHTML += 'Goals: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+
+    Client.Agreements.find()
+      .then((res) => {
+        el.innerHTML += 'Agreements: ' + res.data.length + '<br />';
+      })
+      .catch(handleError);
+  })
+  .catch(function(err) {
+    throw err;
+  });
+
+</script>
+
+</html>
