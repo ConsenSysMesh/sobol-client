@@ -139,6 +139,26 @@ class Client extends Base {
       clear: () => this._request.post(`${this._orgPath}/notifications/clearAll`),
     };
 
+    /**
+     * Custom Fields
+     */
+    this.CustomFields = {
+      find: params => this._request.get(`${this._orgPath}/custom-fields${buildQuery(params)}`),
+      create: customField => this._request.post(`${this._orgPath}/custom-fields`, customField),
+      update: customField => this._request.put(`${this._orgPath}/custom-fields/${customField._id}`, customField),
+      delete: customFieldId => this._request.delete(`${this._orgPath}/custom-fields/${customFieldId}`),
+    };
+
+    /**
+     * Custom Field Values
+     */
+    this.CustomFieldValues = {
+      find: params => this._request.get(`${this._orgPath}/custom-field-values${buildQuery(params)}`),
+      create: customFieldValue => this._request.post(`${this._orgPath}/custom-field-values`, customFieldValue),
+      update: customFieldValue => this._request.put(`${this._orgPath}/custom-field-values/${customFieldValue._id}`, customFieldValue),
+      delete: customFieldValueId => this._request.delete(`${this._orgPath}/custom-field-values/${customFieldValueId}`),
+    };
+
     return this;
   }
 
