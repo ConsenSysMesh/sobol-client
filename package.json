@@ -4,7 +4,7 @@
   "license": "MIT",
   "author": "Sobol - <team@sobol.io>",
   "repository": "git@github.com:ConsenSys/sobol-client.git",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack -p --progress --mode production --config webpack.config.js",
