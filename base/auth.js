@@ -16,7 +16,6 @@ class Auth {
       if (typeof key !== 'string') {
         throw new Error(`[${PKG_NAME}] ... auth requires the "key" is a JWT`);
       }
-
       const session = decode(key);
       this._setSession(session);
       resolve(session);

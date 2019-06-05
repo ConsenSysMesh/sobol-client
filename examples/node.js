@@ -3,6 +3,7 @@ const Base = require('../base');
 
 const { log, error } = console;
 const key = '';
+const endpoint = 'https://sobol.io/d/api/v1'; // for testing purposes
 
 const handleError = (err) => {
   if (err.response && err.response.data) {
@@ -15,12 +16,12 @@ const handleError = (err) => {
 // basic usage
 Client.configure({
   key,
+  endpoint,
 })
   .then(() => {
     const session = Client.getSession();
     const version = Client.getVersion();
     const {
-      Applications,
       Users,
       Teams,
       Roles,
@@ -30,12 +31,6 @@ Client.configure({
 
     log(`Version: ${version}`);
     log(`Org: ${session.oid}`);
-
-    Applications.find()
-      .then((res) => {
-        log('Applications:', res.data.length);
-      })
-      .catch(handleError);
 
     Users.find()
       .then((res) => {
