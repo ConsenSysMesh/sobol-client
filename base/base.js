@@ -88,11 +88,14 @@ class Base {
    * @returns {object} this
    */
   destroy() {
-    this._auth.deauthenticate();
-    this._request.destroy();
-    this._setOrg(null);
-    this._key = null;
-    return this;
+    return this._auth.deauthenticate()
+      .then(() => {
+        this._request.destroy();
+        this._setOrg(null);
+        this._key = null;
+        this._headers = [];
+        return this;
+      });
   }
 
   /**

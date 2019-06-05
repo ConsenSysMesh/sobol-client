@@ -107,8 +107,9 @@ class Client extends Base {
       delete: agreementId => this._request.delete(`${this._orgPath}/agreements/${agreementId}`),
       update: agreement => this._request.put(`${this._orgPath}/agreements/${agreement._id}`, agreement),
       addSignatory: (agreementId, signatory) => this._request.post(`${this._orgPath}/agreements/${agreementId}/signatories`, signatory),
-      removeSignatory: (agreementId, signatory) => this._request.delete(`${this._orgPath}/agreements/${agreementId}/signatories/${signatory._id}`, {}),
+      removeSignatory: (agreementId, signatory) => this._request.delete(`${this._orgPath}/agreements/${agreementId}/signatories/${signatory._id}`),
       updateParties: (agreementId, parties) => this._request.post(`${this._orgPath}/agreements/${agreementId}/parties`, { parties }),
+      updateFacilitators: (agreementId, facilitators) => this._request.post(`${this._orgPath}/agreements/${agreementId}/facilitators`, { facilitators }),
     };
 
     /**
@@ -157,6 +158,42 @@ class Client extends Base {
       create: customFieldValue => this._request.post(`${this._orgPath}/custom-field-values`, customFieldValue),
       update: customFieldValue => this._request.put(`${this._orgPath}/custom-field-values/${customFieldValue._id}`, customFieldValue),
       delete: customFieldValueId => this._request.delete(`${this._orgPath}/custom-field-values/${customFieldValueId}`),
+    };
+
+    /**
+     * Sentiments
+     */
+    this.Sentiments = {
+      find: params => this._request.get(`${this._orgPath}/sentiments${buildQuery(params)}`),
+      findOne: sentimentId => this._request.get(`${this._orgPath}/sentiments/${sentimentId}`),
+      create: (sentiment, params) => this._request.post(`${this._orgPath}/sentiments${buildQuery(params)}`, sentiment),
+      update: sentiment => this._request.put(`${this._orgPath}/sentiments/${sentiment._id}`, sentiment),
+      updateParties: (sentimentId, updatedParties) => this._request.put(`${this._orgPath}/sentiments/parties/${sentimentId}`, { updatedParties }),
+      delete: sentimentId => this._request.delete(`${this._orgPath}/sentiments/${sentimentId}`),
+      stats: params => this._request.get(`${this._orgPath}/sentiments/statistics${buildQuery(params)}`),
+    };
+
+    /**
+     * Relates To
+     */
+    this.RelatesTo = {
+      get: params => this._request.get(`${this._orgPath}/relates-to${buildQuery(params)}`),
+      set: (params, relations) => this._request.post(`${this._orgPath}/relates-to${buildQuery(params)}`, { relatesTo: relations }),
+    };
+
+    /**
+     * Search
+     */
+    this.Search = {
+      search: (objectTypes, params) => this._request
+        .get(`${this._orgPath}/search${buildQuery({ objectTypes, ...params })}`),
+    };
+
+    /**
+     * Adjacencies
+     */
+    this.Adjacencies = {
+      find: params => this._request.get(`${this._orgPath}/adjacencies${buildQuery(params)}`),
     };
 
     return this;

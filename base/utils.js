@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = {
   /**
    * Builds a query string from an object
@@ -9,8 +11,12 @@ module.exports = {
 
     if (params) {
       query = Object.keys(params)
-        .filter(param => params[param]) // exclude undefined
-        .map(param => `${param}=${params[param]}`)
+        .filter(param => !_.isUndefined(params[param])) // exclude undefined
+        .map(param => (Array.isArray(params[param]) // Handle array query parameters properly
+          ? params[param]
+            .map(value => `${param}=${encodeURIComponent(value)}`)
+            .join('&')
+          : `${param}=${encodeURIComponent(params[param])}`))
         .join('&');
     }
 
